@@ -1,9 +1,9 @@
 require('dotenv').config();
 const url=require('url');
-const pg=require('pg');
+const Pg=require('pg');
 
-const params = url.parse('postgres://'+process.env.USERDB+':'+process.env.PASSDB+'@'+process.env.HOSTDB+':'+process.env.PORTDB+'/'+process.env.DBNAME);
-const auth = params.auth.split(':');
+//const params = url.parse('postgres://'+process.env.USERDB+':'+process.env.PASSDB+'@'+process.env.HOSTDB+':'+process.env.PORTDB+'/'+process.env.DBNAME);
+//const auth = params.auth.split(':');
 const connection = 'postgres://'+process.env.USERDB+':'+process.env.PASSDB+'@'+process.env.HOSTDB+':'+process.env.PORTDB+'/'+process.env.DBNAME;
 
 /*
@@ -28,7 +28,7 @@ const config = {
     database: params.pathname.split('/')[1]
     };
 */
-    const conn = new Pool({
+    var conn = new Pg({
         connectionString: connection
       });
 
