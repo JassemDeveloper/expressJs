@@ -28,13 +28,13 @@ const config = {
     database: params.pathname.split('/')[1]
     };
 */
-    var conn = new Pg({
+var conn = new Pg({
         connectionString: connection
       });
 
-      conn.on('connect', () => {
+    conn.on('connect', () => {
         console.log('connected to the db');
-      });
+    });
     
 //const conn = new pg.Pool(config);
 module.exports =conn;
