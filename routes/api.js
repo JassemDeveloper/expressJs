@@ -127,7 +127,7 @@ router.post('/info/add',(req,res)=>{
             if(err) {
                res.json({msg:"Something Went wrong" + err});
                pusher.trigger('channel-test','event-test',{
-                msg:'Something Went wrong'
+                msg:'Something Went wrong' +err
                });
                }else{
                 res.json({msg:"Record was added Successfully",data:data});
