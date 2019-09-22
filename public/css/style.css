@@ -14,6 +14,47 @@ body{
 	height: 100%;
 }
 
+.position-404{
+    position:relative;
+}
+.page-404-1 {
+	font-size: 200px;
+	color: white;
+	position: absolute;
+	left: 30%;
+}
+
+.page-404-2 {
+	font-size: 200px;
+	color: red;
+	position: absolute;
+	left: 31.4%;
+}
+
+.title-1 {
+	position: absolute;
+	font-size: 53px;
+	color: white;
+	/* outline-color: 1px blck; */
+	/* left: 81%; */
+	top: 185px;
+	left: 50%;
+	transform: translate(-50%,50%);
+	width: 100%;
+}
+.title-2 {
+	position: absolute;
+	font-size: 53px;
+	color: red;
+	/* outline-color: 1px blck; */
+	/* left: 81%; */
+	top: 180px;
+	left: 50%;
+	transform: translate(-50%,50%);
+	width: 100%;
+}
+
+
 #deleteB,#updateB,#cancelB,#saveB,#loadMore,#clearB{
     color: white;
 }

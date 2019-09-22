@@ -18,13 +18,19 @@ const conn = new  pgp.Pool({
     database: process.env.DBNAME
     });
 */
-const config = {
-    user: auth[0],
-    password: auth[1],
-    host: params.hostname,
-    port: params.port,
-    database: params.pathname.split('/')[1]
-    };
-    
+
+    const config = {
+        host:process.env.HOSTDB,
+        user: process.env.USERDB, //this is the db user credential
+        database: process.env.DBNAME,
+        password: process.env.PASSDB,
+        port: process.env.PORTDB,
+        max: 10, // max number of clients in the pool
+        idleTimeoutMillis: 30000,
+        ssl:true
+      };
+
 const conn = new pg.Pool(config);
+
+
 module.exports =conn;

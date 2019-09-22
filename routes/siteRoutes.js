@@ -2,6 +2,7 @@ const express=require('express');
 const moment = require('moment');
 const router=express.Router();
 const http = require('http');
+
 router.get('/',(req,res)=>{
 res.render('index',{
     title:"Home Page",
@@ -26,7 +27,6 @@ router.get('/page',(req,res,next)=>{
         });
         response.on('end',()=>{
             final = JSON.parse(collectData);
-            console.log(final);
             var formatedData=[];
             var empty=true;
             if(final.rows == undefined){
@@ -60,8 +60,6 @@ router.get('/page',(req,res,next)=>{
 
         });
     });
-
-
 
 });
 /*
@@ -109,7 +107,7 @@ router.get('/',(req,res,next)=>{
     });
 });
 */
-router.get('/info/:id',(req,res,next)=>{
+router.get('/info/:id([0-9]+)',(req,res,next)=>{
     var id=req.params.id;
     var fullUrl = req.protocol + '://' + req.get('host') ;
     var collectData='';
@@ -121,23 +119,31 @@ router.get('/info/:id',(req,res,next)=>{
         });
         response.on('end',()=>{
             final=JSON.parse(collectData);
-            final.forEach(element => {
-                var hireDate=moment(element.hire_date).format('YYYY-MM-DD');
-                var diffDuration = moment.duration(moment().diff(hireDate));
-                var obj={
-                    id:element.id,
-                    name:element.name,
-                    age:element.age,
-                    salary:element.salary,
-                    hire_date:moment(element.hire_date).format('YYYY-MM-DD'),
-                    hired_since:diffDuration.years() +" years " + parseInt(diffDuration.months()) +" months" +  diffDuration.days() + " days" 
-                }
-                foramtedData.push(obj);
-            });
-            res.render('details',{
-                title:'More Info Details Page Using Twig Template',
-                data:foramtedData
-                        });
+            if(final.match == false){
+                res.render('404',{
+                    title:'The Id is not in the database'
+                })
+            }else{
+                final.forEach(element => {
+                    var hireDate=moment(element.hire_date).format('YYYY-MM-DD');
+                    var diffDuration = moment.duration(moment().diff(hireDate));
+                    var obj={
+                        id:element.id,
+                        name:element.name,
+                        age:element.age,
+                        salary:element.salary,
+                        hire_date:moment(element.hire_date).format('YYYY-MM-DD'),
+                        hired_since:diffDuration.years() +" years " + parseInt(diffDuration.months()) +" months " +  diffDuration.days() + " days" 
+                    }
+                    foramtedData.push(obj);
+                });
+                res.render('details',{
+                    title:'More Info Details Page Using Twig Template',
+                    data:foramtedData
+                            });
+            }
+
+    
         });
     });
 });

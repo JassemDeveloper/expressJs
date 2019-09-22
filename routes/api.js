@@ -8,27 +8,28 @@ var totalItems=0;
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 // to get all records from info table 
-router.get('/all/:start',(req,res)=>{
+router.get('/all/:start([0-9]+)',(req,res)=>{
+    
     var pages=req.params.page || 1;
     var start=req.params.start || itemsPerPage;
-    conn.connect((err,connect)=>{
-        connect.query('select count(*) as total from info',(err,rows,fields)=>{
+        conn.query('select count(*) as total from info',(err,rows,fields)=>{
             if(err){
                 throw err
             }else{
-                if(rows.length > 0){
-                    pages=rows[0].total/maxNumPerPage;
-                    totalItems=rows[0].total;
+                if(rows.rows.length > 0){
+                    pages=rows.rows[0].total/maxNumPerPage;
+                    totalItems=rows.rows[0].total;
                 }
             }
         });
-        connect.query('select * from info  order by id DESC limit '+maxNumPerPage+' offset '+start,(err,rows,fields)=>{
+        conn.query('select * from info  order by id DESC limit '+maxNumPerPage+' offset '+start,(err,rows,fields)=>{
             if(err){
                 throw err
             }else{
-                if(rows.length > 0){
+
+                if(rows.rows.length > 0){
                     res.json({
-                        rows:rows,
+                        rows:rows.rows,
                         itemsPerPage:itemsPerPage,
                         pages:pages,
                         totalItems:totalItems
@@ -36,43 +37,41 @@ router.get('/all/:start',(req,res)=>{
                 }else{
                     res.json({msg:"No Records have been added yet"});
                 }
-               connect.release();
             }
         });
-    }); 
 });
 
 
 //to get only one record from info table
-router.get('/info/:id',(req,res)=>{
+router.get('/info/:id([0-9]+)',(req,res)=>{
     const id=req.params.id;
-    conn.connect((err,connect)=>{
-        connect.query('select * from info where id="'+id+'"',(err,rows,fields)=>{
+        conn.query('select * from info where id='+id+'',(err,rows,fields)=>{
             if(err){
                 throw err
             }else{
-                if(rows.length > 0){
-                    res.json(rows);
+                console.log(rows.rows.length);
+                if(rows.rows.length > 0){
+                    res.json(rows.rows);
                 }else{
-                    res.json({msg:"No Match was found for this id"});
+                    res.json({
+                        msg:"No Match was found for this id",
+                        match:false
+                    });
                 }
-               connect.release();
             }
         });
-    });    
 });
 
 
 //to delete only one record from info table
-router.delete('/info/:id',(req,res)=>{
+router.delete('/info/:id([0-9]+)',(req,res)=>{
     const id=req.params.id;
-    conn.connect((err,connect)=>{
-        connect.query('delete from info where id="'+id+'"',(err,rows,fields)=>{
+        conn.query('delete from info where id='+id,(err,rows,fields)=>{
             if(err){
                 throw err
             }else{
-                if(rows.affectedRows > 0){
-                   res.json({msg:"This Record was deleted successfully",data:rows});
+                if(rows.rowCount > 0){
+                   res.json({msg:"This Record was deleted successfully",data:rows.rows});
                    pusher.trigger('channel-test','event-test',{
                     msg:'This Record was deleted successfully'
                    });
@@ -80,25 +79,25 @@ router.delete('/info/:id',(req,res)=>{
                     pusher.trigger('channel-test','event-test',{
                         msg:'No Match was found for this id'
                        });
-                    res.json({msg:"No Match was found for this id"});
+                       res.json({
+                        msg:"No Match was found for this id",
+                        match:false
+                    });
                 }
-               connect.release();
             }
         });
-    });
 });
 
 
 //to update only one record from info table
-router.put('/info/:id',(req,res)=>{
+router.put('/info/:id([0-9]+)',(req,res)=>{
     const id=req.params.id;
     const name=req.body.name;
     const age=req.body.age;
     const salary=req.body.salary;
     const hire_date=req.body.hire_date;
     const data=[name,parseInt(age),parseInt(salary),hire_date,parseInt(id)];
-    conn.connect((err,connect)=>{
-        connect.query("update info set name=? ,age=? ,salary=? , hire_date=? where id=?",data,(err,result)=>{
+        conn.query("update info set name='"+name+"' ,age='"+parseInt(age)+"' ,salary='"+parseInt(salary)+"' , hire_date='"+hire_date+"' where id='"+parseInt(id)+"'",(err,result)=>{
             if(err) {
                res.json({msg:"Something Went wrong"});
                pusher.trigger('channel-test','event-test',{
@@ -110,9 +109,7 @@ router.put('/info/:id',(req,res)=>{
                     msg:'Record was updated Successfully'
                    });      
             }
-                  connect.release();
         });
-    });
 });
 
 //to insert only one record to info table
@@ -122,8 +119,7 @@ router.post('/info/add',(req,res)=>{
     const salary=req.body.salary;
     const hire_date=req.body.hire_date;
     const data=[name,parseInt(age),parseInt(salary),hire_date];
-    conn.connect((err,connect)=>{
-        connect.query("insert into info(name,age,salary,hire_date) values(?,?,?,?)",data,(err,result)=>{
+        conn.query("insert into info(name,age,salary,hire_date) values('"+name+"','"+parseInt(age)+"','"+parseInt(salary)+"','"+hire_date+"')",(err,result)=>{
             if(err) {
                res.json({msg:"Something Went wrong" + err});
                pusher.trigger('channel-test','event-test',{
@@ -135,9 +131,7 @@ router.post('/info/add',(req,res)=>{
                     msg:'Record was added Successfully'
                    });
                 }
-                  connect.release();
         });
-    });
 });
 
 module.exports= router;

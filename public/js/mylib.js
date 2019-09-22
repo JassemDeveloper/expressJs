@@ -1,9 +1,9 @@
 
 
 $(document).ready(function(){
-    $('#hire_date input').datepicker({
-        format: 'yyyy-mm-dd'
-    });
+$('#hire_date input').datepicker({
+    format: 'yyyy-mm-dd'
+});
 var pusher = new Pusher('dcc9e263026ffd989e0b', {
     cluster: 'ap2',
     forceTLS: true
@@ -13,7 +13,6 @@ var channel = pusher.subscribe('channel-test');
 channel.bind('event-test', function(data) {
     bootbox.alert(data.msg);
     });
-
 var page=1;
 var start=0;
 paginationDiv=$('#pagination');
@@ -191,21 +190,26 @@ clickableB.on('click',function(e){
     }else if(action == 'save'){
     showBox('confirm Save Action',function(result){
         if(result){
-            var form=$('#myform').serialize();
-            $.ajax({
-                url:'/api/info/'+id,
-                method:"put",
-                data:form,
-                success:function(res){
-                  //  bootbox.alert(res.msg);
-                    setTimeout(function(){
-                        window.location.reload(true);
-                    },2000);
-                },
-                error:function(err){
-                    console.log(err);
-                }
-            })
+            var checkForm=newRecordFormValidation();
+            if(checkForm){
+              var form=$('#myform').serialize();
+              $.ajax({
+                  url:'/api/info/'+id,
+                  method:"put",
+                  data:form,
+                  success:function(res){
+                    //  bootbox.alert(res.msg);
+                      setTimeout(function(){
+                          window.location.reload(true);
+                      },2000);
+                  },
+                  error:function(err){
+                      console.log(err);
+                  }
+              })
+            }else{
+             bootbox.alert('make sure all fields have correct data ');
+            }
           }else{
             bootbox.alert("You Clicked Cancelled");  
           }
