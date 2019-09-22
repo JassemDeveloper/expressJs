@@ -11,7 +11,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.get('/all/:start',(req,res)=>{
     var pages=req.params.page || 1;
     var start=req.params.start || itemsPerPage;
-    conn.getConnection((err,connect)=>{
+    conn.connect((err,connect)=>{
         connect.query('select count(*) as total from info',(err,rows,fields)=>{
             if(err){
                 throw err
@@ -46,7 +46,7 @@ router.get('/all/:start',(req,res)=>{
 //to get only one record from info table
 router.get('/info/:id',(req,res)=>{
     const id=req.params.id;
-    conn.getConnection((err,connect)=>{
+    conn.connect((err,connect)=>{
         connect.query('select * from info where id="'+id+'"',(err,rows,fields)=>{
             if(err){
                 throw err
@@ -66,7 +66,7 @@ router.get('/info/:id',(req,res)=>{
 //to delete only one record from info table
 router.delete('/info/:id',(req,res)=>{
     const id=req.params.id;
-    conn.getConnection((err,connect)=>{
+    conn.connect((err,connect)=>{
         connect.query('delete from info where id="'+id+'"',(err,rows,fields)=>{
             if(err){
                 throw err
@@ -97,7 +97,7 @@ router.put('/info/:id',(req,res)=>{
     const salary=req.body.salary;
     const hire_date=req.body.hire_date;
     const data=[name,parseInt(age),parseInt(salary),hire_date,parseInt(id)];
-    conn.getConnection((err,connect)=>{
+    conn.connect((err,connect)=>{
         connect.query("update info set name=? ,age=? ,salary=? , hire_date=? where id=?",data,(err,result)=>{
             if(err) {
                res.json({msg:"Something Went wrong"});
@@ -122,7 +122,7 @@ router.post('/info/add',(req,res)=>{
     const salary=req.body.salary;
     const hire_date=req.body.hire_date;
     const data=[name,parseInt(age),parseInt(salary),hire_date];
-    conn.getConnection((err,connect)=>{
+    conn.connect((err,connect)=>{
         connect.query("insert into info(name,age,salary,hire_date) values(?,?,?,?)",data,(err,result)=>{
             if(err) {
                res.json({msg:"Something Went wrong"});

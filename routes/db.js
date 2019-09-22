@@ -1,11 +1,9 @@
 require('dotenv').config();
 const url=require('url');
-const Pg=require('pg');
+const pg=require('pg');
 
-//const params = url.parse('postgres://'+process.env.USERDB+':'+process.env.PASSDB+'@'+process.env.HOSTDB+':'+process.env.PORTDB+'/'+process.env.DBNAME);
-//const auth = params.auth.split(':');
-const connection = 'postgres://'+process.env.USERDB+':'+process.env.PASSDB+'@'+process.env.HOSTDB+':'+process.env.PORTDB+'/'+process.env.DBNAME;
-
+const params = url.parse('postgres://'+process.env.USERDB+':'+process.env.PASSDB+'@'+process.env.HOSTDB+':'+process.env.PORTDB+'/'+process.env.DBNAME);
+const auth = params.auth.split(':');
 /*
 //const conn=pgp('postgres://'+process.env.USERDB+':'+process.env.PASSDB+'@'+process.env.HOSTDB+':'+process.env.PORTDB+'/'+process.env.DBNAME);
 const conn = new  pgp.Pool({
@@ -19,7 +17,7 @@ const conn = new  pgp.Pool({
     password: process.env.PASSDB+'@'+process.env.HOSTDB,
     database: process.env.DBNAME
     });
-
+*/
 const config = {
     user: auth[0],
     password: auth[1],
@@ -27,14 +25,6 @@ const config = {
     port: params.port,
     database: params.pathname.split('/')[1]
     };
-*/
-var conn = new Pg({
-        connectionString: connection
-      });
-
-    conn.on('connect', () => {
-        console.log('connected to the db');
-    });
     
-//const conn = new pg.Pool(config);
+const conn = new pg.Pool(config);
 module.exports =conn;
