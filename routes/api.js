@@ -125,7 +125,7 @@ router.post('/info/add',(req,res)=>{
     conn.connect((err,connect)=>{
         connect.query("insert into info(name,age,salary,hire_date) values(?,?,?,?)",data,(err,result)=>{
             if(err) {
-               res.json({msg:"Something Went wrong"});
+               res.json({msg:"Something Went wrong" + err});
                pusher.trigger('channel-test','event-test',{
                 msg:'Something Went wrong'
                });
