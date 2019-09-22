@@ -22,7 +22,7 @@ router.get('/all/:start',(req,res)=>{
                 }
             }
         });
-        connect.query('select * from info  order by id DESC limit '+start+' offset '+maxNumPerPage,(err,rows,fields)=>{
+        connect.query('select * from info  order by id DESC limit '+maxNumPerPage+' offset '+start,(err,rows,fields)=>{
             if(err){
                 throw err
             }else{
