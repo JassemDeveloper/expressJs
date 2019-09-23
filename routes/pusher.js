@@ -5,7 +5,7 @@ var pusher = new Pusher({
     key: process.env.KEY,
     secret: process.env.SECRET,
     cluster: process.env.CLUSTER,
-    encrypted: true
+    useTLS:true
 });
 
 /*

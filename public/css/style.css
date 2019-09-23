@@ -7,6 +7,9 @@ body {
 	background-image: url('/img/background.jpg');
 	/* background-size: conver; */
 }
+.bootbox-body{
+	color:black;
+}
 .top {
 	position: absolute;
 	/* height: 100%; */

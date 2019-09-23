@@ -11,7 +11,7 @@ var pusher = new Pusher('dcc9e263026ffd989e0b', {
 
 var channel = pusher.subscribe('channel-test');
 channel.bind('event-test', function(data) {
-    bootbox.alert(data.msg);
+   bootbox.alert(data.msg);
     });
 var page=0;
 var start=0;
@@ -29,7 +29,7 @@ $.ajax({
                 start=res.itemsPerPage + 10;
                 var data='';
                 res.rows.forEach(function(i){
-                    data +="<div class='col-sm-12 col-md-4 col-lg-4 animation'>";
+                    data +="<div class='col-sm-12 col-xs-12 col-md-4 col-lg-4 animation'>";
                     data +="<a href='/info/"+i.id+"'>";
                     data +="<div class='card info-card' >";
                     data +="<div class='row'>";
@@ -63,7 +63,7 @@ $.ajax({
                             success:function(res){
                                 var data='';
                                 res.rows.forEach(function(i){
-                                    data +="<div class='col-sm-12 col-md-4 col-lg-4 animation'>";
+                                    data +="<div class='col-sm-12 col-xs-12 col-md-4 col-lg-4 animation'>";
                                     data +="<a href='/info/"+i.id+"'>";
                                     data +="<div class='card info-card' >";
                                     data +="<div class='row'>";
@@ -156,7 +156,7 @@ clickableB.on('click',function(e){
     var id=this.getAttribute('data-id');
     var action=this.getAttribute('data-action');
    if(action == 'delete'){
-       showBox('confirm Delete Action',function(result){
+       showBox("confirm Delete Action",function(result){
         if(result){
                 $.ajax({
                     url:'/api/info/'+id,
