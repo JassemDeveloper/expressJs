@@ -85,10 +85,20 @@ form label{
 .homePageCard {
 	/* height: 50px; */
 	line-height: 62px;
-	font-size: 40px;
+	font-size: 32px;
 	box-shadow: 1px 1px 2px 3px rgba(100,100,100,0.5);
 	margin-left: 25px;
 	padding: 20px;
+	width: 300px;
+}
+
+.datepicker-container {
+
+	color: black;
+}
+
+#myform {
+	padding: 3px;
 }
 
 .homePageCard:hover{
