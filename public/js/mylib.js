@@ -28,8 +28,9 @@ $.ajax({
             if(page == 0){
                 start=res.itemsPerPage + 10;
                 var data='';
+                    data='<div class="row">';
                 res.rows.forEach(function(i){
-                    data +="<div class='col-sm-12 col-xs-12 col-md-4 col-lg-4 animation'>";
+                    data +="<div class='col-sm-12  col-md-4 col-lg-4 animation'>";
                     data +="<a href='/info/"+i.id+"'>";
                     data +="<div class='card info-card' >";
                     data +="<div class='row'>";
@@ -63,7 +64,7 @@ $.ajax({
                             success:function(res){
                                 var data='';
                                 res.rows.forEach(function(i){
-                                    data +="<div class='col-sm-12 col-xs-12 col-md-4 col-lg-4 animation'>";
+                                    data +="<div class='col-sm-12  col-md-4 col-lg-4 animation'>";
                                     data +="<a href='/info/"+i.id+"'>";
                                     data +="<div class='card info-card' >";
                                     data +="<div class='row'>";
