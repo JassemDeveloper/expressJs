@@ -117,7 +117,7 @@ router.post('/info/add',(req,res)=>{
     const salary=req.body.salary;
     const hire_date=req.body.hire_date;
     const data=[name,parseInt(age),parseInt(salary),hire_date];
-        conn.query("insert into info(name,age,salary,hire_date) values('"+name+"','"+parseInt(age)+"','"+parseInt(salary)+"','"+hire_date+"')",(err,result)=>{
+        conn.query("insert into info(id,name,age,salary,hire_date) values(nextval('info_seq'::regclass),'"+name+"','"+parseInt(age)+"','"+parseInt(salary)+"','"+hire_date+"')",(err,result)=>{
             if(err) {
                res.json({msg:"Something Went wrong" + err});
                pusher.trigger('channel-test','event-test',{
