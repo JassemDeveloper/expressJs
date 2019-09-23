@@ -9,36 +9,35 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 // to get all records from info table 
 router.get('/all/:start([0-9]+)',(req,res)=>{
-    
-    var pages=req.params.page || 1;
+    var pages=0;
     var start=req.params.start || itemsPerPage;
-        conn.query('select count(*) as total from info',(err,rows,fields)=>{
-            if(err){
-                throw err
-            }else{
-                if(rows.rows.length > 0){
-                    pages=rows.rows[0].total/maxNumPerPage;
-                    totalItems=rows.rows[0].total;
-                }
-            }
-        });
-        conn.query('select * from info  order by id DESC limit '+maxNumPerPage+' offset '+start,(err,rows,fields)=>{
-            if(err){
-                throw err
-            }else{
 
-                if(rows.rows.length > 0){
-                    res.json({
-                        rows:rows.rows,
-                        itemsPerPage:itemsPerPage,
-                        pages:pages,
-                        totalItems:totalItems
-                    });
+            conn.query('select count(*) as total from info',(err,rows,fields)=>{
+                if(err){
+                    throw err
                 }else{
-                    res.json({msg:"No Records have been added yet"});
+                    if(rows.rows.length > 0){
+                        pages=rows.rows[0].total/maxNumPerPage;
+                        totalItems=rows.rows[0].total;
+                        conn.query('select * from info  order by id DESC limit '+maxNumPerPage+' offset '+start,(err,rows,fields)=>{
+                            if(err){
+                                throw err
+                            }else{
+                                if(rows.rows.length > 0){
+                                    res.json({
+                                        rows:rows.rows,
+                                        itemsPerPage:itemsPerPage,
+                                        pages:pages,
+                                        totalItems:totalItems
+                                    });
+                                }
+                            }
+                        });
+                    }else{
+                        res.json({msg:"No Records have been added yet"});
+                    }
                 }
-            }
-        });
+            });
 });
 
 
@@ -49,7 +48,6 @@ router.get('/info/:id([0-9]+)',(req,res)=>{
             if(err){
                 throw err
             }else{
-                console.log(rows.rows.length);
                 if(rows.rows.length > 0){
                     res.json(rows.rows);
                 }else{

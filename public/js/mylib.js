@@ -13,10 +13,11 @@ var channel = pusher.subscribe('channel-test');
 channel.bind('event-test', function(data) {
     bootbox.alert(data.msg);
     });
-var page=1;
+var page=0;
 var start=0;
 paginationDiv=$('#pagination');
 dataDiv=$('#data');
+var loadmore='<a class="btn btn-primary" id="loadMore">Load More</a>'
 $.ajax({
     url:'/api/all/'+start,
     method:"get",
@@ -24,12 +25,11 @@ $.ajax({
             if(res.rows == undefined){
                 res.rows=[];
             }
-            var loadmore='<a class="btn btn-primary" id="loadMore">Load More</a>'
-            if(page == 1){
+            if(page == 0){
                 start=res.itemsPerPage + 10;
                 var data='';
                 res.rows.forEach(function(i){
-                    data +="<div class='col-4 animation'>";
+                    data +="<div class='col-sm-12 col-md-4 col-lg-4 animation'>";
                     data +="<a href='/info/"+i.id+"'>";
                     data +="<div class='card info-card' >";
                     data +="<div class='row'>";
@@ -50,21 +50,20 @@ $.ajax({
                     data +="</div>";
                 });
                 dataDiv.html(data);
+                page=page+1;
 
             }
-            if(res.pages > 1 ){
+            if(res.pages > 0 ){
                 paginationDiv.html(loadmore);
                 $('#loadMore').on('click',function(){
-                    page=page+1;
                     if(parseInt(res.pages) > 1 && page < (parseInt(res.pages)+1)){
-                        start=start + 10;
                         $.ajax({
                             url:'/api/all/'+start,
                             method:"get",
                             success:function(res){
                                 var data='';
                                 res.rows.forEach(function(i){
-                                    data +="<div class='col-4  animation'>";
+                                    data +="<div class='col-sm-12 col-md-4 col-lg-4 animation'>";
                                     data +="<a href='/info/"+i.id+"'>";
                                     data +="<div class='card info-card' >";
                                     data +="<div class='row'>";
@@ -84,8 +83,9 @@ $.ajax({
                                     data +="</a>";
                                     data +="</div>";
                                 });
-
                                 dataDiv.append(data);
+                                start=start + 10;
+                                page=page+1;
                             },
                             error:function(err){
                                 console.log(err);

@@ -5,7 +5,7 @@ const http = require('http');
 
 router.get('/',(req,res)=>{
 res.render('index',{
-    title:"Home Page",
+    title:"Welcome To Home Page",
     homeURL:"/",
     infoURL:"/page"
 });
@@ -26,7 +26,7 @@ router.get('/page',(req,res,next)=>{
             collectData += chunk;
         });
         response.on('end',()=>{
-            final = JSON.parse(collectData);
+            final = JSON.parse(collectData);    
             var formatedData=[];
             var empty=true;
             if(final.rows == undefined){

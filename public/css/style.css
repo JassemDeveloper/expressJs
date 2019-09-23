@@ -1,10 +1,20 @@
-body{
-    font-size: 20px;
-    color: black;
-    font-style: italic;
-    background: goldenrod;
+body {
+	font-size: 20px;
+	/* color: black; */
+	font-style: italic;
+	background: #3E7FA4;
+	color: white;
+	background-image: url('/img/background.jpg');
+	/* background-size: conver; */
 }
-
+.top {
+	position: absolute;
+	/* height: 100%; */
+	left: 50%;
+	top: 25%;
+	transform: translate(-50%,50%);
+	/* left: 50%; */
+}
 
 .animation{
     animation: animate 0.9s ease-in-out;
@@ -58,29 +68,41 @@ body{
 #deleteB,#updateB,#cancelB,#saveB,#loadMore,#clearB{
     color: white;
 }
-
+form label{
+    color: black;
+    font-style: italic;
+    font-weight: bold;
+}
 #cancelB,#saveB{
     display: none;
+}
+.top h1{
+    font-size: 60px;
 }
 .homePageCard {
 	/* height: 50px; */
 	line-height: 62px;
 	font-size: 40px;
 	box-shadow: 1px 1px 2px 3px rgba(100,100,100,0.5);
+	margin-left: 25px;
+	padding: 20px;
 }
 
 .homePageCard:hover{
-   background: gray; 
+   background: #6498B6; 
    color: white;
 }
 
-.info-card{
-        box-shadow: 1px 1px 4px 1px palegoldenrod;
+.info-card {
+	box-shadow: 1px 1px 4px 1px #324C5B;
+	border-bottom: 7px dashed#324C5B;
 }
 
 .info-card:hover {
-	background: gray;
-	color: white;
+	background: #6498B6;
+    color: white;
+    border-bottom: 7px dashed#fff;
+
 }
 a:hover{
     text-decoration: none;
